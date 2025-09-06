@@ -28,6 +28,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/payment/{payment}', [\App\Http\Controllers\PaymentController::class, 'show'])->name('payment.show');
     Route::post('/payment/{payment}/process', [\App\Http\Controllers\PaymentController::class, 'process'])->name('payment.process');
     Route::get('/payment/{payment}/success', [\App\Http\Controllers\PaymentController::class, 'success'])->name('payment.success');
+    Route::get('/payment/{payment}/error', [\App\Http\Controllers\PaymentController::class, 'error'])->name('payment.error');
+    Route::get('/payment/{payment}/check-status', [\App\Http\Controllers\PaymentController::class, 'checkStatus'])->name('payment.check-status');
+    Route::get('/payment/{payment}/tunai', [\App\Http\Controllers\PaymentController::class, 'tunai'])->name('payment.tunai');
     Route::get('/dashboard/payments', [\App\Http\Controllers\PaymentController::class, 'myPayments'])->name('dashboard.payments');
 });
 

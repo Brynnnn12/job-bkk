@@ -148,7 +148,7 @@
                                             'Dengan memilih pembayaran tunai, Anda setuju untuk datang langsung ke kantor untuk menyelesaikan pembayaran. Lanjutkan?'
                                         );
                                         if (confirmation) {
-                                            window.location.href = "{{ route('payment.check-status', $payment) }}";
+                                            window.location.href = "{{ route('payment.tunai', $payment) }}";
                                         }
                                     }
                                 });
