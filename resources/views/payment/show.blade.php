@@ -1,9 +1,4 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Pembayaran Lamaran') }}
-        </h2>
-    </x-slot>
+<x-home>
 
     <div class="py-12">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
@@ -91,107 +86,95 @@
                         </div>
 
                         @if ($payment->status === 'pending')
-                            <!-- Payment Form -->
+                            <!-- Payment Options -->
                             <div class="bg-white border border-gray-200 rounded-lg p-6">
                                 <h2 class="text-xl font-semibold text-gray-800 mb-4">Pilih Metode Pembayaran</h2>
 
-                                <form action="{{ route('payment.process', $payment->id) }}" method="POST">
-                                    @csrf
-
-                                    <div class="space-y-4 mb-6">
-                                        <div class="flex items-center">
-                                            <input id="transfer" name="payment_method" type="radio" value="transfer"
-                                                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
-                                                required>
-                                            <label for="transfer" class="ml-3 flex items-center">
-                                                <i class="fas fa-university text-blue-600 mr-2"></i>
-                                                <div>
-                                                    <div class="font-medium">Transfer Bank</div>
-                                                    <div class="text-sm text-gray-500">Transfer melalui ATM, Internet
-                                                        Banking, atau Mobile Banking</div>
-                                                    <div class="text-xs text-orange-600 mt-1">
-                                                        <i class="fas fa-exclamation-triangle mr-1"></i>
-                                                        Fitur sedang dalam pengembangan (Midtrans)
-                                                    </div>
+                                <div class="space-y-4 mb-6">
+                                    <div class="flex items-center">
+                                        <input id="transfer" name="payment_method" type="radio" value="transfer"
+                                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300" required>
+                                        <label for="transfer" class="ml-3 flex items-center">
+                                            <i class="fas fa-university text-blue-600 mr-2"></i>
+                                            <div>
+                                                <div class="font-medium">Transfer Bank (Midtrans)</div>
+                                                <div class="text-sm text-gray-500">ATM, Internet Banking, Mobile Banking
                                                 </div>
-                                            </label>
-                                        </div>
-
-                                        <div class="flex items-center">
-                                            <input id="tunai" name="payment_method" type="radio" value="tunai"
-                                                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
-                                                checked>
-                                            <label for="tunai" class="ml-3 flex items-center">
-                                                <i class="fas fa-money-bill-wave text-green-600 mr-2"></i>
-                                                <div>
-                                                    <div class="font-medium">Pembayaran Tunai</div>
-                                                    <div class="text-sm text-gray-500">Bayar langsung di kantor</div>
-                                                    <div class="text-xs text-green-600 mt-1">
-                                                        <i class="fas fa-check-circle mr-1"></i>
-                                                        Tersedia - Pembayaran langsung di tempat
-                                                    </div>
-                                                </div>
-                                            </label>
-                                        </div>
+                                            </div>
+                                        </label>
                                     </div>
 
-                                    <div class="flex items-center justify-between">
-                                        <a href="{{ route('dashboard') }}"
-                                            class="inline-flex items-center px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-700 rounded-lg transition duration-300">
-                                            <i class="fas fa-arrow-left mr-2"></i>
-                                            Kembali
-                                        </a>
-
-                                        <button type="submit" id="paymentButton"
-                                            class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition duration-300">
-                                            <i class="fas fa-credit-card mr-2"></i>
-                                            Lanjutkan Pembayaran
-                                        </button>
+                                    <div class="flex items-center">
+                                        <input id="tunai" name="payment_method" type="radio" value="tunai"
+                                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300" checked>
+                                        <label for="tunai" class="ml-3 flex items-center">
+                                            <i class="fas fa-money-bill-wave text-green-600 mr-2"></i>
+                                            <div>
+                                                <div class="font-medium">Pembayaran Tunai</div>
+                                                <div class="text-sm text-gray-500">Bayar langsung di kantor</div>
+                                            </div>
+                                        </label>
                                     </div>
-                                </form>
+                                </div>
+
+                                <div class="flex items-center justify-between">
+                                    <a href="{{ route('dashboard') }}"
+                                        class="inline-flex items-center px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-700 rounded-lg transition duration-300">
+                                        <i class="fas fa-arrow-left mr-2"></i>
+                                        Kembali
+                                    </a>
+
+                                    <button type="button" id="paymentButton"
+                                        class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition duration-300">
+                                        <i class="fas fa-credit-card mr-2"></i>
+                                        Lanjutkan Pembayaran
+                                    </button>
+                                </div>
                             </div>
+
+                            {{-- Midtrans Snap JS --}}
+                            <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}">
+                            </script>
 
                             <script>
                                 document.getElementById('paymentButton').addEventListener('click', function(e) {
                                     const selectedMethod = document.querySelector('input[name="payment_method"]:checked').value;
 
                                     if (selectedMethod === 'transfer') {
-                                        e.preventDefault();
-                                        alert(
-                                            'Maaf, fitur pembayaran transfer dengan Midtrans sedang dalam pengembangan. Silakan pilih pembayaran tunai untuk sementara.');
-                                        return false;
+                                        // Jalankan Snap Midtrans
+                                        payNow("{{ $payment->snap_token }}");
                                     } else if (selectedMethod === 'tunai') {
                                         const confirmation = confirm(
                                             'Dengan memilih pembayaran tunai, Anda setuju untuk datang langsung ke kantor untuk menyelesaikan pembayaran. Lanjutkan?'
-                                            );
-                                        if (!confirmation) {
-                                            e.preventDefault();
-                                            return false;
+                                        );
+                                        if (confirmation) {
+                                            window.location.href = "{{ route('payment.check-status', $payment) }}";
                                         }
                                     }
                                 });
 
-                                // Show different information based on selected payment method
-                                document.querySelectorAll('input[name="payment_method"]').forEach(radio => {
-                                    radio.addEventListener('change', function() {
-                                        const button = document.getElementById('paymentButton');
-                                        const buttonIcon = button.querySelector('i');
-                                        const buttonText = button.querySelector('span') || button.childNodes[2];
-
-                                        if (this.value === 'tunai') {
-                                            buttonIcon.className = 'fas fa-money-bill-wave mr-2';
-                                            button.innerHTML =
-                                                '<i class="fas fa-money-bill-wave mr-2"></i>Konfirmasi Pembayaran Tunai';
-                                            button.className =
-                                                'inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition duration-300';
-                                        } else {
-                                            buttonIcon.className = 'fas fa-university mr-2';
-                                            button.innerHTML = '<i class="fas fa-university mr-2"></i>Lanjutkan ke Transfer Bank';
-                                            button.className =
-                                                'inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition duration-300';
+                                function payNow(snapToken) {
+                                    snap.pay(snapToken, {
+                                        onSuccess: function(result) {
+                                            console.log('Payment success:', result);
+                                            window.location.href = "{{ route('payment.check-status', $payment) }}";
+                                        },
+                                        onPending: function(result) {
+                                            console.log('Payment pending:', result);
+                                            window.location.href = "{{ route('payment.check-status', $payment) }}";
+                                        },
+                                        onError: function(result) {
+                                            console.log('Payment error:', result);
+                                            window.location.href = "{{ route('payment.error', $payment) }}";
+                                        },
+                                        onClose: function() {
+                                            console.log('Payment popup closed');
+                                            setTimeout(() => {
+                                                window.location.href = "{{ route('payment.check-status', $payment) }}";
+                                            }, 2000);
                                         }
                                     });
-                                });
+                                }
                             </script>
                         @else
                             <!-- Payment Status -->
@@ -204,6 +187,10 @@
                                     <i class="fas fa-clock text-yellow-500 text-4xl mb-4"></i>
                                     <h2 class="text-xl font-semibold text-gray-800 mb-2">Pembayaran Sedang Diproses</h2>
                                     <p class="text-gray-600 mb-4">Pembayaran Anda sedang dalam proses verifikasi.</p>
+                                @elseif($payment->status === 'failed')
+                                    <i class="fas fa-times-circle text-red-500 text-4xl mb-4"></i>
+                                    <h2 class="text-xl font-semibold text-gray-800 mb-2">Pembayaran Gagal!</h2>
+                                    <p class="text-gray-600 mb-4">Silakan coba lagi atau gunakan metode lain.</p>
                                 @endif
 
                                 <a href="{{ route('dashboard') }}"
@@ -217,5 +204,4 @@
                 </div>
             </div>
         </div>
-    </div>
-</x-app-layout>
+</x-home>

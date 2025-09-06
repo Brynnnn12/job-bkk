@@ -32,7 +32,7 @@ class JobApplicationController extends Controller
 
     public function store(Request $request)
     {
-        // Check if user is admin based on role relationship
+        //cek apakah user adalah admin, jika iya redirect ke admin panel
         if (Auth::user()->hasRole('Admin')) {
             return redirect('/admin');
         }
@@ -40,7 +40,7 @@ class JobApplicationController extends Controller
             'vacancy_id' => 'required|exists:vacancies,id',
         ]);
 
-        // Check if user already applied
+        //cek apakah user sudah melamar untuk lowongan yang sama
         $existingApplication = JobRegistration::where('user_id', Auth::id())
             ->where('vacancy_id', $request->vacancy_id)
             ->first();
@@ -49,7 +49,7 @@ class JobApplicationController extends Controller
             return redirect()->back()->with('error', 'Anda sudah melamar untuk posisi ini.');
         }
 
-        // Get vacancy data for fee information
+        //cek apakah lowongan ada
         $vacancy = Vacancy::findOrFail($request->vacancy_id);
 
         $jobRegistration = JobRegistration::create([
@@ -58,9 +58,9 @@ class JobApplicationController extends Controller
             'status' => 'pending',
         ]);
 
-        // Check if vacancy has fee (payment required)
+        // Jika lowongan ada biaya, buat record pembayaran
         if ($vacancy->fee && $vacancy->fee > 0) {
-            // Create payment record
+            //buat record pembayaran dengan status pending
             $payment = \App\Models\Payment::create([
                 'job_registration_id' => $jobRegistration->id,
                 'amount' => $vacancy->fee,
@@ -68,6 +68,26 @@ class JobApplicationController extends Controller
                 'payment_method' => 'transfer',
                 'snap_token' => null,
             ]);
+
+            // ==== Midtrans Integration ====
+
+            //set konfigurasi midtrans
+            \App\Services\MidtransConfig::setConfig();
+
+            $params = [
+                'transaction_details' => [
+                    'order_id' => 'ORDER-' . $payment->id,
+                    'gross_amount' => $payment->amount,
+                ],
+                'customer_details' => [
+                    'name' => Auth::user()->name,
+                    'email' => Auth::user()->email,
+                ],
+            ];
+
+            $snapToken = \Midtrans\Snap::getSnapToken($params);
+
+            $payment->update(['snap_token' => $snapToken]);
 
             return redirect()->route('payment.show', $payment->id)->with('success', 'Lamaran berhasil dikirim! Silakan lakukan pembayaran untuk menyelesaikan proses lamaran.');
         }
@@ -77,7 +97,7 @@ class JobApplicationController extends Controller
 
     public function myApplications()
     {
-        // Check if user is admin, redirect to admin panel
+        //cek apakah user adalah admin, jika iya redirect ke admin panel
         if (Auth::user()->hasRole('Admin')) {
             return redirect('/admin');
         }

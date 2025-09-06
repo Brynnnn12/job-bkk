@@ -25,10 +25,11 @@
     <div class="border-t pt-4">
         <div class="flex items-center justify-between">
             <div class="text-blue-600 font-bold text-lg">
+
                 @if ($vacancy->fee)
                     Rp {{ number_format($vacancy->fee, 0, ',', '.') }}
                 @else
-                    Negotiable
+                    Gratis
                 @endif
             </div>
             <div class="text-gray-500 text-sm">

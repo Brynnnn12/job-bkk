@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center space-x-4">
-            <div class="w-12 h-12 rounded-full overflow-hidden bg-gray-200 shadow-md">
+            <div class="w-8 h-8 rounded-full overflow-hidden bg-gray-200 shadow-md">
                 @if ($user->avatar)
                     <img src="{{ Storage::url($user->avatar) }}" alt="Profile Avatar" class="w-full h-full object-cover">
                 @else
@@ -12,10 +12,9 @@
                 @endif
             </div>
             <div>
-                <h2 class="font-bold text-2xl text-gray-900 leading-tight">
+                <h2 class="font-bold text-xl text-gray-900 leading-tight">
                     {{ __('Profile Settings') }}
                 </h2>
-                <p class="text-gray-600 text-sm">Manage your account information and preferences</p>
             </div>
         </div>
     </x-slot>

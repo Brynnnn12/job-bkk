@@ -1,9 +1,4 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Pembayaran Berhasil') }}
-        </h2>
-    </x-slot>
+<x-home>
 
     <div class="py-12">
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
@@ -66,7 +61,8 @@
                                     <li><strong>Silakan datang ke kantor untuk menyelesaikan pembayaran tunai</strong>
                                     </li>
                                     <li>Bawa ID Pembayaran:
-                                        <strong>#{{ str_pad($payment->id, 6, '0', STR_PAD_LEFT) }}</strong></li>
+                                        <strong>#{{ str_pad($payment->id, 6, '0', STR_PAD_LEFT) }}</strong>
+                                    </li>
                                     <li>Alamat: Jl. Contoh No. 123, Jakarta</li>
                                     <li>Jam Operasional: Senin-Jumat 08:00-17:00, Sabtu 08:00-12:00</li>
                                     <li>Hubungi: (021) 1234-5678 untuk informasi lebih lanjut</li>
@@ -113,5 +109,4 @@
                 </div>
             </div>
         </div>
-    </div>
-</x-app-layout>
+</x-home>

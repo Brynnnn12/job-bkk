@@ -37,7 +37,7 @@
                             @if ($vacancy->fee)
                                 Rp {{ number_format($vacancy->fee, 0, ',', '.') }}
                             @else
-                                Gaji Negotiable
+                                Gratis
                             @endif
                         </div>
                     </div>
@@ -53,6 +53,14 @@
                             @if ($alreadyApplied)
                                 <div class="bg-gray-500 text-white px-8 py-3 rounded-lg font-bold">
                                     <i class="fas fa-check mr-2"></i>Sudah Melamar
+                                </div>
+                            @elseif ($vacancy->status !== 'open')
+                                <div class="bg-gray-500 text-white px-8 py-3 rounded-lg font-bold">
+                                    <i class="fas fa-times mr-2"></i>Lowongan Ditutup
+                                </div>
+                            @elseif (Auth::user()->hasRole('Admin'))
+                                <div class="bg-gray-500 text-white px-8 py-3 rounded-lg font-bold">
+                                    <i class="fas fa-user-shield mr-2"></i>Admin Tidak Bisa Melamar
                                 </div>
                             @else
                                 <a href="{{ route('job.apply', $vacancy->id) }}"
@@ -102,12 +110,12 @@
                                     <span class="font-semibold">{{ $vacancy->category->name }}</span>
                                 </div>
                                 <div class="flex justify-between">
-                                    <span class="text-gray-600">Gaji</span>
+                                    <span class="text-gray-600">Pembayaran</span>
                                     <span class="font-semibold text-blue-600">
                                         @if ($vacancy->fee)
                                             Rp {{ number_format($vacancy->fee, 0, ',', '.') }}
                                         @else
-                                            Negotiable
+                                            Gratis
                                         @endif
                                     </span>
                                 </div>

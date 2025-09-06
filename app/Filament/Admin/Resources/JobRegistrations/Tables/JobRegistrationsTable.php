@@ -16,7 +16,7 @@ class JobRegistrationsTable
             ->columns([
                 TextColumn::make('user.name')
                     ->sortable(),
-                TextColumn::make('job.title')
+                TextColumn::make('vacancy.title')
                     ->sortable(),
                 TextColumn::make('status'),
                 TextColumn::make('created_at')
