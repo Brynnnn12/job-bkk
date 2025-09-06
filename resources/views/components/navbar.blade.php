@@ -28,7 +28,7 @@
             </div>
 
             <!-- Auth Buttons -->
-            <div class="flex items-center space-x-4">
+            <div class="hidden md:flex items-center space-x-4">
                 @auth
                     <a href="{{ route('dashboard') }}" class="text-gray-700 hover:text-blue-600 transition duration-300">
                         <i class="fas fa-user mr-2"></i>Dashboard
@@ -66,6 +66,27 @@
                 <a href="{{ route('landing.jobs') }}" class="text-gray-700 hover:text-blue-600 py-2">Lowongan Kerja</a>
                 <a href="{{ route('landing.companies') }}"
                     class="text-gray-700 hover:text-blue-600 py-2">Perusahaan</a>
+                @auth
+                    <!-- fullscreen untuk mobile kalau belum login tampilkan login register -->
+                    <div class="flex items-center space-x-4">
+                        <a href="{{ route('dashboard') }}" class="text-gray-700 hover:text-blue-600 py-2">Dashboard</a>
+                        <form method="POST" action="{{ route('logout') }}" class="inline">
+                            @csrf
+                            <button type="submit"
+                                class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
+                @else
+                    <div class="flex flex-col space-y-2">
+                        <a href="{{ route('login') }}" class="text-gray-700 hover:text-blue-600 py-2">Masuk</a>
+                        <a href="{{ route('register') }}"
+                            class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300 text-center">
+                            Daftar
+                        </a>
+                    </div>
+                @endauth
             </div>
         </div>
     </div>

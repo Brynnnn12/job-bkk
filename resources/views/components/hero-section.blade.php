@@ -1,10 +1,10 @@
-@props(['title', 'subtitle', 'categories' => []])
+@props(['subtitle', 'categories' => []])
 
 <section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20">
     <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto text-center">
             <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-                {{ $title }}
+                Temukan Lowongan Terbaik untuk Karir Impian Anda
             </h1>
             <p class="text-xl md:text-2xl mb-8 text-blue-100">
                 {{ $subtitle }}

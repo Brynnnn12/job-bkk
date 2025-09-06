@@ -1,0 +1,70 @@
+/* Custom responsive styles */
+@media (max-width: 1023px) {
+    /* Hide desktop sidebar on tablet and mobile */
+    .sidebar-desktop {
+        display: none !important;
+    }
+}
+
+@media (min-width: 1024px) {
+    /* Hide mobile header on desktop */
+    .mobile-header {
+        display: none !important;
+    }
+}
+
+/* Smooth transitions */
+.sidebar-transition {
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Custom scrollbar */
+.custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(59, 130, 246, 0.5) transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(59, 130, 246, 0.5);
+    border-radius: 2px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(59, 130, 246, 0.7);
+}
+
+/* Mobile content padding adjustment */
+@media (max-width: 1023px) {
+    .main-content {
+        padding-top: 0;
+    }
+}
+
+/* Backdrop blur support */
+.backdrop-blur-support {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+/* Animation for active menu items */
+@keyframes pulseActive {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+.animate-pulse-slow {
+    animation: pulseActive 2s infinite;
+}

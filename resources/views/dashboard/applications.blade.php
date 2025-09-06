@@ -1,8 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Riwayat Lamaran') }}
-        </h2>
+        <div class="flex items-center space-x-3">
+            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                <i class="fas fa-file-alt text-white"></i>
+            </div>
+            <span>Riwayat Lamaran</span>
+        </div>
     </x-slot>
 
     <div class="py-12">
