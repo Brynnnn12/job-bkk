@@ -345,7 +345,10 @@
             <div x-data="{ open: false }" class="relative">
                 <button @click="open = !open"
                     class="w-9 h-9 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center shadow-lg hover:scale-105 transition-all duration-200">
-                    <i class="fas fa-user text-white text-xs"></i>
+                    //avatar
+                    <img class="w-8 h-8 rounded-full object-cover"
+                        src="{{ Auth::user()->avatar ? Storage::url(Auth::user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=0D8ABC&color=fff&size=128' }}"
+                        alt="{{ Auth::user()->name }}">
                 </button>
                 <div x-show="open" @click.away="open = false" x-transition:enter="transition ease-out duration-200"
                     x-transition:enter-start="transform opacity-0 scale-95 -translate-y-2"
